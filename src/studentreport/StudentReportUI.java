@@ -3,6 +3,8 @@ package studentreport;
 import javax.swing.JFileChooser;
 import java.io.File;  
 import java.io.FileReader;
+import java.util.Iterator;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -61,6 +63,7 @@ public class StudentReportUI extends javax.swing.JFrame {
     private void btnLoadReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadReportActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("json","json"));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION)
         {
@@ -70,9 +73,27 @@ public class StudentReportUI extends javax.swing.JFrame {
             JSONParser parser = new JSONParser();
             try {
                 Object obj = parser.parse(new FileReader(selectedFile));
-                JSONObject jsonObj = (JSONObject)obj;
-                System.out.println(jsonObj.toJSONString());
+                JSONObject jsonTests = (JSONObject)obj;
+                JSONArray Tests = (JSONArray) jsonTests.get("Tests");
                 
+                for (int i = 0 ; i < Tests.size(); i++) {
+                    JSONObject Test = (JSONObject)Tests.get(i);
+                    String Subject = (String)Test.get("Subject");
+                    if (Subject.equals("Maths"))
+                    {
+                        JSONArray Students = (JSONArray)Test.get("Student");
+                        System.out.println(Subject);
+                        for (int p = 0; p < Students.size(); p++)
+                        {
+                            JSONObject Student = (JSONObject)Students.get(p);
+                            String Grade = (String)Student.get("Grade");
+                            if (Grade.equals("A"))
+                            {
+                                System.out.println(Student.toString());
+                            }
+                        }
+                    }
+                }
             } catch (Exception e) {
             }
  
