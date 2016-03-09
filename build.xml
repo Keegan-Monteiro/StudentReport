@@ -70,4 +70,15 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="-post-jar">
+        <jar jarfile="dist/Student_Report2.jar">
+            <zipfileset src="${dist.jar}" excludes="META-INF/*" />
+            <zipfileset src="dist/lib/jcommon-1.0.23.jar" excludes="META-INF/*" />
+            <zipfileset src="dist/lib/jfreechart-1.0.19.jar" excludes="META-INF/*" />
+            <zipfileset src="dist/lib/json-simple-1.1.1.jar" excludes="META-INF/*" />
+            <manifest>
+                <attribute name="Main-Class" value="studentreport.StudentReportUI"/>
+            </manifest>
+        </jar>
+    </target>
 </project>
