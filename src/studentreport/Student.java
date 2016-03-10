@@ -5,23 +5,30 @@ import java.util.Map;
 
 public class Student {
     private final String Name;
-    private final Map<Subject, Score> subjectGrades = new HashMap<Subject, Score>();
-    private final Map<String, Integer> gradeCount = new HashMap<String, Integer>();
+    private final Map<Subject, Score> subjectScores = new HashMap<Subject, Score>();
 
     public String getStudent () {return Name;}
     public Student (String studentName) {this.Name = studentName;}
     
-    public Map<Subject, Score> getGrades() {return subjectGrades;}
+    public Map<Subject, Score> getGrades() {return subjectScores;}
     public void setSubjectGrade (String subject, int score) {
-        subjectGrades.put(Subject.valueOf(subject.toUpperCase()), new Score(score));
-        setGradeCount(subjectGrades.get(Subject.valueOf(subject.toUpperCase())).ScoreToGrade());
+        subjectScores.put(Subject.valueOf(subject.toUpperCase()), new Score(score));
     }
     
-    public void setGradeCount(String StringGrade) {
-        if (gradeCount.containsKey(StringGrade))
-            gradeCount.put(StringGrade, gradeCount.get(StringGrade) + 1);
-        else
-            gradeCount.put(StringGrade, 1);
+    public Map<String,Integer> getGradeCount() {
+        Map<String, Integer> gradeCount = new HashMap<String, Integer>();
+        
+        for (Map.Entry<Subject, Score> entry : subjectScores.entrySet()) {
+            Subject Key = entry.getKey();
+            Score Value = entry.getValue();
+            String Grade = Value.ScoreToGrade();
+            
+            if (gradeCount.containsKey(Grade))
+                gradeCount.put(Grade, gradeCount.get(Grade) + 1);
+            else
+                gradeCount.put(Grade, 1);
+        }
+        
+        return gradeCount;
     }
-    public Map<String,Integer> getGradeCount() {return gradeCount;}
 }
